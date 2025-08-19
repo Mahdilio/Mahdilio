@@ -3,138 +3,232 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>LIo Dashboard</title>
+  <title>LIo – داشبورد VPN</title>
+
+  <!-- Tailwind CSS & QR Generator & Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet"/>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { vazir: ['Vazirmatn','sans-serif'] },
+          colors: {
+            brand: { 500:'#06b6d4',600:'#0891b2',700:'#0e7490' }
+          },
+          animation: {
+            'gradient-bg':'gradient-bg 16s ease infinite',
+            'fade-in':'fadeIn 0.6s ease-out both',
+            'slide-up':'slideUp 0.7s ease-out both'
+          },
+          keyframes: {
+            'gradient-bg': {
+              '0%,100%': { 'background-position':'0% 50%' },
+              '50%':{ 'background-position':'100% 50%' }
+            },
+            fadeIn:{ '0%':{opacity:0},'100%':{opacity:1} },
+            slideUp:{ '0%':{transform:'translateY(20px)',opacity:0}, '100%':{transform:'translateY(0)',opacity:1} }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    body { font-family:'Vazirmatn',sans-serif; background:#f8fafc; color:#334155; }
-    .card { background:white; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
-    .flag { width:24px;height:16px;display:inline-block;background-size:cover;margin-left:8px; }
-    .btn { background:#06b6d4; color:white; border-radius:6px; padding:6px 12px; font-size:14px; }
-    .btn:hover { background:#0891b2; }
-    #qrcode svg { width:80px; height:80px; }
+    body {
+      font-family:'Vazirmatn',sans-serif;
+      background:linear-gradient(-45deg,#f8fafc,#e2e8f0,#cbd5e1,#f1f5f9);
+      background-size:400% 400%; animation:gradient-bg 16s ease infinite;
+    }
+    .dark body {
+      background:linear-gradient(-45deg,#0f172a,#111827,#1e293b,#0f172a);
+    }
+    .card { @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-colors; }
+    .btn { @apply bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-lg transition; }
+    .btn-copy { @apply bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600; }
+    .flag { width:24px;height:16px;background-size:cover;margin-left:8px; }
+    #qrModal { @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 hidden; }
+    #qrModal .card { @apply max-w-xs;width-full text-center; }
   </style>
 </head>
-<body class="p-8 space-y-8">
+
+<body class="text-gray-900 dark:text-gray-100">
+
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 left-4">
+    <button id="themeToggle" class="btn"><i class="fa-solid fa-moon"></i></button>
+  </div>
 
   <!-- Header -->
-  <header class="flex items-center justify-between">
-    <div class="flex items-center space-x-3 space-x-reverse">
-      <!-- SVG Logo LIo -->
-      <svg width="40" height="40" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <header class="container mx-auto px-4 py-8 text-center animate-fade-in">
+    <div class="flex flex-col items-center space-y-4">
+      <!-- Logo -->
+      <svg width="60" height="60" viewBox="0 0 64 64">
         <defs>
           <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#22d3ee"/>
             <stop offset="100%" stop-color="#a855f7"/>
           </linearGradient>
-          <linearGradient id="lg2" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#06b6d4"/>
-            <stop offset="100%" stop-color="#f43f5e"/>
-          </linearGradient>
         </defs>
-        <circle cx="32" cy="32" r="28" fill="none" stroke="url(#lg1)" stroke-width="3"/>
-        <path d="M20 20 v24 h10" fill="none" stroke="url(#lg2)" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="44" cy="36" r="8" fill="none" stroke="url(#lg1)" stroke-width="4"/>
+        <circle cx="32" cy="32" r="28" fill="none" stroke="url(#lg1)" stroke-width="4"/>
+        <path d="M20 20 v24 h10" fill="none" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="44" cy="36" r="8" fill="none" stroke="#06b6d4" stroke-width="4"/>
       </svg>
-      <h1 class="text-2xl font-semibold">LIo Dashboard</h1>
+      <h1 class="text-4xl font-bold">LIo VPN Dashboard</h1>
+      <p class="text-gray-600 dark:text-gray-400">اینترنت آزاد، سریع و امن</p>
     </div>
-    <div class="flex space-x-6 space-x-reverse">
+    <!-- Stats -->
+    <div class="mt-8 flex justify-center space-x-12 space-x-reverse">
       <div class="text-center">
-        <div class="text-sm text-gray-500">Ping</div>
-        <div id="ping" class="text-lg font-bold">-- ms</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">Ping</div>
+        <div id="ping" class="text-xl font-semibold">-- ms</div>
       </div>
       <div class="text-center">
-        <div class="text-sm text-gray-500">Uptime</div>
-        <div id="uptime" class="text-lg font-bold">--%</div>
-      </div>
-      <div class="text-center">
-        <div class="text-sm text-gray-500">Users</div>
-        <div id="users" class="text-lg font-bold">--</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">Uptime</div>
+        <div id="uptime" class="text-xl font-semibold">-- %</div>
       </div>
     </div>
   </header>
 
-  <!-- Configurations Section -->
-  <section class="card p-6 space-y-4">
-    <h2 class="text-xl font-semibold">Configurations</h2>
-    <div id="config-list" class="space-y-3">
-      <!-- JS will inject -->
-    </div>
-  </section>
+  <main class="container mx-auto px-4 space-y-8">
 
-  <!-- Subscription Link -->
-  <section class="card p-6 space-y-2 text-center">
-    <h2 class="text-xl font-semibold">Subscription Link</h2>
-    <div class="flex items-center justify-center space-x-2 space-x-reverse">
-      <input id="subLink" class="border px-3 py-1 w-full max-w-md" value="https://dev1.irdevs.sbs"/>
-      <button class="btn" onclick="copyText('subLink')"><i class="fa-solid fa-copy"></i></button>
-    </div>
-  </section>
+    <!-- Configurations -->
+    <section class="card">
+      <h2 class="text-2xl font-semibold mb-4">کانفیگ سرورها</h2>
+      <div id="configList" class="space-y-4">
+        <!-- جا برای کانفیگ ها -->
+      </div>
+    </section>
 
-  <!-- Footer: Telegram -->
-  <footer class="text-center">
+    <!-- Subscription Link -->
+    <section class="card text-center">
+      <h2 class="text-2xl font-semibold mb-2">لینک اشتراک</h2>
+      <div class="flex justify-center items-center space-x-2 space-x-reverse">
+        <input id="subLink" class="border p-2 w-full max-w-md text-center" readonly/>
+        <button class="btn" onclick="copySubscription()">
+          <i class="fa-solid fa-copy"></i>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- QR Modal -->
+  <div id="qrModal">
+    <div class="card space-y-4">
+      <h3 class="text-lg font-semibold">QR Code</h3>
+      <div id="qrCodeContainer"></div>
+      <button class="btn" onclick="closeQR()">بستن</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="container mx-auto px-4 py-6 text-center space-y-2">
     <a id="tgLink" href="#" target="_blank" class="inline-flex items-center space-x-2 space-x-reverse text-brand-600 hover:underline">
-      <i class="fa-brands fa-telegram text-xl"></i>
-      <span>Join our Telegram</span>
+      <i class="fa-brands fa-telegram text-2xl"></i><span>کانال تلگرام ما</span>
     </a>
+    <p class="text-gray-500 dark:text-gray-400">© 1404 LIo VPN</p>
   </footer>
 
   <script>
-    // Placeholder data
-    const configs = [
-      {country:'US', name:'USA Server', config:'vless://c53b13f5-07e5-4f39-aa1a-8811286ec195@www.speedtest.net:80?path=%2FOTdXpCbLZfA46vOM%3Fed%3D2560&security=&encryption=none&host=mahdi.mahdimm8091.workers.dev&type=ws#%F0%9F%92%A6%202%20-%20VLESS%20-%20Domain%20%3A%2080'},
-      {country:'DE', name:'Germany Server', config:'vless://def...'},
-      {country:'NL', name:'Netherlands', config:'vless://ghi...'},
-      {country:'FR', name:'France', config:'vless://jkl...'}
+    // ====== تنظیمات اولیه ======
+    const servers = [
+      // ساختار: { country:'US', name:'USA Server', flag:'URL_FLAG', config:'YOUR_CONFIG_URL' }
+      { country:'US', name:'USA Server', flag:'https://flagcdn.com/us.svg', config:'vless://c53b13f5-07e5-4f39-aa1a-8811286ec195@www.speedtest.net:80?path=%2FOTdXpCbLZfA46vOM%3Fed%3D2560&security=&encryption=none&host=mahdi.mahdimm8091.workers.dev&type=ws#%F0%9F%92%A6%202%20-%20VLESS%20-%20Domain%20%3A%2080' },
+      { country:'DE', name:'Germany',    flag:'https://flagcdn.com/de.svg', config:'vless://abc...2' },
+      { country:'NL', name:'Netherlands',flag:'https://flagcdn.com/nl.svg', config:'vless://abc...3' },
+      { country:'FR', name:'France',     flag:'https://flagcdn.com/fr.svg', config:'vless://abc...4' }
     ];
-    const flags = {US:'https://flagcdn.com/us.svg',DE:'https://flagcdn.com/de.svg',NL:'https://flagcdn.com/nl.svg',FR:'https://flagcdn.com/fr.svg'};
+    let subscriptionLink = 'https://dev1.irdevs.sbs';
+    let telegramLink     = 'https://t.me/YourChannel';
 
-    function init(){
-      // Stats
-      document.getElementById('ping').textContent='45 ms';
-      document.getElementById('uptime').textContent='99.99%';
-      document.getElementById('users').textContent='128';
-
-      // Config list
-      const container = document.getElementById('config-list');
-      configs.forEach((c,i)=>{
-        const div=document.createElement('div');
-        div.className='flex items-center justify-between';
-        div.innerHTML=`
+    // ====== بارگذاری اولیه ======
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // پر کردن لیست کانفیگ
+      const list = document.getElementById('configList');
+      servers.forEach((s,i)=>{
+        const row = document.createElement('div');
+        row.className = 'flex justify-between items-center';
+        row.innerHTML = `
           <div class="flex items-center">
-            <span class="flag" style="background-image:url(${flags[c.country]});"></span>
-            <span>${c.name}</span>
+            <span class="flag" style="background-image:url(${s.flag})"></span>
+            <span>${s.name}</span>
           </div>
           <div class="flex items-center space-x-2 space-x-reverse">
-            <button class="btn" onclick="copyConfig(${i})"><i class="fa-solid fa-copy"></i></button>
-            <button class="btn" onclick="showQR(${i})"><i class="fa-solid fa-qrcode"></i></button>
+            <button class="btn-copy" onclick="copyConfig(${i})">
+              <i class="fa-solid fa-copy"></i>
+            </button>
+            <button class="btn-copy" onclick="showQR(${i})">
+              <i class="fa-solid fa-qrcode"></i>
+            </button>
           </div>`;
-        container.appendChild(div);
+        list.appendChild(row);
       });
+      // لینک سابسکریپشن و تلگرام
+      document.getElementById('subLink').value = subscriptionLink;
+      document.getElementById('tgLink').href = telegramLink;
+
+      // آمار اولیه
+      updateStats();
+      setInterval(updateStats,3000);
+
+      // حالت شب/روز
+      const themeToggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+      const saved = localStorage.getItem('lioTheme') || 'light';
+      if(saved==='dark') root.classList.add('dark');
+      updateToggleIcon();
+      themeToggle.onclick = ()=>{
+        root.classList.toggle('dark');
+        updateToggleIcon();
+        localStorage.setItem('lioTheme', root.classList.contains('dark')?'dark':'light');
+      };
+    });
+
+    // ====== توابع ======
+    function updateToggleIcon(){
+      const icon = document.querySelector('#themeToggle i');
+      document.documentElement.classList.contains('dark')
+        ? icon.className='fa-solid fa-sun'
+        : icon.className='fa-solid fa-moon';
     }
 
-    function copyConfig(idx){
-      navigator.clipboard.writeText(configs[idx].config)
-        .then(_=>alert('Copied✅'))
-        .catch(_=>alert('Error❌'));
-    }
-    function showQR(idx){
-      const qrWin = window.open('', '_blank');
-      qrWin.document.write('<div id="qrcode"></div>');
-      const qr = qrcode(0,'M'); qr.addData(configs[idx].config); qr.make();
-      qrWin.document.getElementById('qrcode').innerHTML = qr.createSvgTag({cellSize:4,margin:2});
-    }
-    function copyText(id){
-      const txt=document.getElementById(id).value;
-      navigator.clipboard.writeText(txt).then(_=>alert('Copied✅'));
+    function updateStats(){
+      // پیاده‌سازی نمونه
+      const pingEl = document.getElementById('ping');
+      const upEl   = document.getElementById('uptime');
+      const ping = Math.round(30 + Math.random()*40) + ' ms';
+      const up   = (99 + Math.random()).toFixed(2) + ' %';
+      pingEl.textContent = ping;
+      upEl.textContent   = up;
     }
 
-    // Set Telegram link placeholder
-    document.getElementById('tgLink').href='https://t.me/YourChannel';
-
-    document.addEventListener('DOMContentLoaded', init);
+    function copyConfig(i){
+      navigator.clipboard.writeText(servers[i].config)
+        .then(_=>alert('کانفیگ کپی شد ✅'))
+        .catch(_=>alert('خطا در کپی ❌'));
+    }
+    function showQR(i){
+      const modal = document.getElementById('qrModal');
+      const container = document.getElementById('qrCodeContainer');
+      container.innerHTML = '';
+      const qr = qrcode(0,'M');
+      qr.addData(servers[i].config); qr.make();
+      container.innerHTML = qr.createSvgTag({cellSize:4,margin:2});
+      modal.style.display = 'flex';
+    }
+    function closeQR(){
+      document.getElementById('qrModal').style.display = 'none';
+    }
+    function copySubscription(){
+      navigator.clipboard.writeText(subscriptionLink)
+        .then(_=>alert('لینک کپی شد ✅'));
+    }
   </script>
 </body>
 </html>
