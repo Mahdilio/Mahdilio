@@ -15,26 +15,12 @@
                     fontFamily: {
                         'vazir': ['Vazirmatn', 'Tahoma', 'Arial', 'sans-serif']
                     },
-                    colors: {
-                        brand: {
-                            50: '#ecfeff',
-                            100: '#cffafe',
-                            200: '#a5f3fc',
-                            300: '#67e8f9',
-                            400: '#22d3ee',
-                            500: '#06b6d4',
-                            600: '#0891b2',
-                            700: '#0e7490',
-                            800: '#155e75',
-                            900: '#164e63'
-                        }
-                    },
                     animation: {
                         'fade-in': 'fadeIn 0.5s ease-out',
                         'slide-up': 'slideUp 0.6s ease-out forwards',
                         'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'gradient-bg': 'gradient-bg 15s ease infinite',
-                        'float': 'float 6s ease-in-out infinite'
+                        'gradient-bg': 'gradient-bg 16s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
                         fadeIn: { 'from': { opacity: 0 }, 'to': { opacity: 1 } },
@@ -63,10 +49,9 @@
             font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
             line-height: 1.6;
             scroll-behavior: smooth;
-            background: linear-gradient(-45deg, #0b1220, #10172a, #0f172a, #0b1445, #1d1148);
+            background: linear-gradient(-45deg, #0b1220, #0f172a, #111827, #1f1148);
             background-size: 500% 500%;
-            animation: gradient-bg 18s ease infinite;
-            color: #e5e7eb;
+            animation: gradient-bg 16s ease infinite;
         }
         .card-glass {
             background: rgba(255, 255, 255, 0.06);
@@ -111,14 +96,7 @@
         .config-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.25); border-radius: 10px; }
         .config-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; }
         .config-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.35); }
-        .neon-ring {
-            box-shadow: 0 0 20px rgba(56,189,248,.6), 0 0 40px rgba(168,85,247,.35);
-        }
-        .btn-3d {
-            transform: translateY(0);
-            box-shadow: 0 12px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.08);
-        }
-        .btn-3d:hover { transform: translateY(-2px); }
+        .neon-ring { box-shadow: 0 0 20px rgba(56,189,248,.6), 0 0 40px rgba(168,85,247,.35); }
     </style>
 </head>
 <body class="min-h-screen text-gray-200">
@@ -262,7 +240,7 @@
                 <div class="bg-black bg-opacity-20 rounded-xl p-4 mb-6 shadow-inner relative z-10">
                     <p id="subLink" class="font-mono text-center text-white font-bold text-sm md:text-lg break-all">https://dev1.irdevs.sbs</p>
                 </div>
-                <button onclick="copySubLink()" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl btn-3d">
+                <button onclick="copySubLink()" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl">
                     <i class="fa-solid fa-copy ml-2"></i>
                     کپی کردن لینک
                 </button>
@@ -337,7 +315,7 @@
                         </div>
 
                         <div id="config-list-container" class="space-y-3 h-64 overflow-y-auto config-list pr-2">
-                            <!-- Config buttons injected by JS -->
+                            <!-- Config buttons will be injected here by JS -->
                         </div>
                     </div>
 
@@ -388,7 +366,7 @@
                     <div id="ping-list-container" class="space-y-3 mb-6 h-48 overflow-y-auto config-list pr-2">
                         <!-- Ping results will be injected here -->
                     </div>
-                    <button onclick="runAllPings()" id="pingTestBtn" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-8 py-3 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed btn-3d">
+                    <button onclick="runAllPings()" id="pingTestBtn" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-8 py-3 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fa-solid fa-play ml-2"></i>
                         شروع تست پینگ
                     </button>
@@ -406,7 +384,7 @@
                     <div id="dns-leak-result" class="text-center h-48 flex flex-col justify-center items-center">
                         <p class="text-gray-400">برای بررسی وضعیت، روی دکمه زیر کلیک کنید.</p>
                     </div>
-                    <button onclick="checkDNSLeak()" id="dnsTestBtn" class="w-full bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white px-8 py-3 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed btn-3d">
+                    <button onclick="checkDNSLeak()" id="dnsTestBtn" class="w-full bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white px-8 py-3 rounded-xl font-bold text-lg ripple transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
                         <i class="fa-solid fa-search ml-2"></i>
                         شروع بررسی امنیت
                     </button>
@@ -496,7 +474,7 @@
                 <p class="text-gray-300 text-lg">پاسخ به پرسش‌های رایج شما</p>
             </div>
             <div class="max-w-4xl mx-auto space-y-4" id="faq-container">
-                <!-- FAQ items injected by JS -->
+                <!-- FAQ items will be injected here by JS -->
             </div>
         </section>
 
@@ -569,6 +547,7 @@
                 <p class="text-cyan-200">اینترنت آزاد برای همه، همیشه و همه‌جا</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto mb-10">
+                <!-- Developer -->
                 <a href="https://t.me/asrnovin_ir" target="_blank" class="card-glass rounded-2xl p-6 flex items-center space-x-4 space-x-reverse group">
                     <div class="w-16 h-16 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center text-3xl text-white shadow-lg transition-transform group-hover:scale-110">
                         <i class="fa-solid fa-user-astronaut"></i>
@@ -578,6 +557,7 @@
                         <p class="text-gray-300">ارتباط مستقیم و پشتیبانی</p>
                     </div>
                 </a>
+                <!-- Channel -->
                 <a href="https://t.me/asrnovin_ir" target="_blank" class="card-glass rounded-2xl p-6 flex items-center space-x-4 space-x-reverse group">
                     <div class="w-16 h-16 bg-gradient-to-br from-fuchsia-500 to-pink-600 rounded-full flex items-center justify-center text-3xl text-white shadow-lg transition-transform group-hover:scale-110">
                         <i class="fa-brands fa-telegram"></i>
@@ -597,6 +577,11 @@
     </footer>
 
     <script>
-        // --- CONFIGURATIONS ---
+        // --- CONFIGURATIONS (from original, برند شده به LIo) ---
         const configs = {
-            cf_de_1: { name: 'VLESS - LIo 1 🇩🇪', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FlwIBsf84RYZSVl1x%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.p
+            cf_de_1: { name: 'VLESS - LIo 1 🇩🇪', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FlwIBsf84RYZSVl1x%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.pAGES.DeV#%F0%9F%87%A9%F0%9F%87%AA%20Cloudflare%20-%20LIo%201' },
+            cf_de_2: { name: 'VLESS - LIo 2 🇩🇪', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@www.speedtest.net:443?path=%2FweIiUrqpwSQLUEGI%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=FK31lNdM4W8Uj0Yp1dRWlTDtDKo6y-Cu.pagES.dEv#%F0%9F%87%A9%F0%9F%87%AA%20Cloudflare%20-%20LIo%202' },
+            cf_de_3: { name: 'VLESS - LIo 3 🇩🇪', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@172.66.45.9:443?path=%2FSKBxgdeScAwjcuZJ%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fk31Lndm4w8uj0yp1drWLTdtdko6y-cU.PaGES.dEv#%F0%9F%87%A9%F0%9F%87%AA%20Cloudflare%20-%20LIo%203' },
+            cf_de_4: { name: 'VLESS - LIo 4 🇩🇪', config: 'vless://826f524a-cea1-4e44-9b49-3381d13b7593@172.66.46.247:443?path=%2FfNX3GzNxncCIIsf7%3Fed%3D2560&security=tls&alpn=http%2F1.1&encryption=none&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fk31lndM4W8UJ0YP1DrwLtDtDKO6y-CU.pAgES.DEv#%F0%9F%87%A9%F0%9F%87%AA%20Cloudflare%20-%20LIo%204' },
+            cf_de_tr_5: { name: 'Trojan - LIo 5 🇩🇪', config: 'trojan://%3AbC5%5Elakx%3E%24d@fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev:443?path=%2FtrULF8XIBg0I5upoFe%3Fed%3D2560&security=tls&alpn=http%2F1.1&host=fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev&fp=randomized&type=ws&sni=fK31lnDM4w8uJ0yp1dRWlTdTdko6y-CU.pAGES.DeV#%F0%9F%87%A9%F0%9F%87%AA%20Cloudflare%20-%20LIo%205' },
+            cf_de_tr_6: { name: 'Trojan - LIo 6 🇩🇪', config: 'trojan://%3AbC5%5Elakx%3E%24d@www.speedtest.net:443?path=%2FtrAF6D510tD4ptv2AR%3Fed%3D2560&
